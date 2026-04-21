@@ -139,6 +139,30 @@ function toHex(bytes) {
   return s;
 }
 
+/* ----- Local cache (localStorage) -----
+ * The secret is sensitive; we store it in the browser's localStorage so it
+ * survives reloads on the user's own device. It never leaves the device
+ * except over BLE (to the paired N32 peripheral). Bump CACHE_VERSION to
+ * invalidate older shapes. */
+const CACHE_KEY = 'n32totp.cache.v1';
+
+function loadCache() {
+  try {
+    const raw = localStorage.getItem(CACHE_KEY);
+    if (!raw) return null;
+    const obj = JSON.parse(raw);
+    return (obj && typeof obj === 'object') ? obj : null;
+  } catch (_) {
+    return null;
+  }
+}
+
+function saveCache(obj) {
+  try {
+    localStorage.setItem(CACHE_KEY, JSON.stringify(obj));
+  } catch (_) { /* quota / private mode — silently drop */ }
+}
+
 const app = Vue.createApp({
   data() {
     return {
@@ -175,6 +199,7 @@ const app = Vue.createApp({
   },
 
   mounted: function () {
+    this.loadFromCache();
     this.getKeyFromUrl();
     this.getQueryParameters();
     this.update();
@@ -239,6 +264,17 @@ const app = Vue.createApp({
     otpauthUri: function () {
       this.renderQRCode();
     },
+
+    /* Persist any user-editable field the moment it changes. Watching the
+     * individual scalars (vs. the computed URI) means we also capture
+     * `sendKeyOnConnect`, which isn't part of the otpauth URI. */
+    secret_key:        function () { this.saveToCache(); },
+    issuer:            function () { this.saveToCache(); },
+    account:           function () { this.saveToCache(); },
+    digits:            function () { this.saveToCache(); },
+    period:            function () { this.saveToCache(); },
+    algorithm:         function () { this.saveToCache(); },
+    sendKeyOnConnect:  function () { this.saveToCache(); },
   },
 
   methods: {
@@ -401,6 +437,33 @@ const app = Vue.createApp({
         this._stream.getTracks().forEach(t => t.stop());
         this._stream = null;
       }
+    },
+
+    /* Restore previously-saved form state. Called before URL hash / query
+     * params so those still win — bookmarked provisioning links should
+     * override the cached entry. */
+    loadFromCache: function () {
+      const c = loadCache();
+      if (!c) return;
+      if (typeof c.secret_key       === 'string')  this.secret_key       = c.secret_key;
+      if (typeof c.issuer           === 'string')  this.issuer           = c.issuer;
+      if (typeof c.account          === 'string')  this.account          = c.account;
+      if (Number.isFinite(c.digits))               this.digits           = c.digits;
+      if (Number.isFinite(c.period) && c.period)   this.period           = c.period;
+      if (typeof c.algorithm        === 'string')  this.algorithm        = c.algorithm;
+      if (typeof c.sendKeyOnConnect === 'boolean') this.sendKeyOnConnect = c.sendKeyOnConnect;
+    },
+
+    saveToCache: function () {
+      saveCache({
+        secret_key:       this.secret_key,
+        issuer:           this.issuer,
+        account:          this.account,
+        digits:           Number(this.digits) || 6,
+        period:           Number(this.period) || 30,
+        algorithm:        this.algorithm,
+        sendKeyOnConnect: !!this.sendKeyOnConnect,
+      });
     },
 
     getKeyFromUrl: function () {

@@ -5,7 +5,13 @@
       "Bash(cp \"D:/github/my/WirelessPowermeter_/user/app_ble.c\" \"D:/github/my/WirelessPowermeter/user/app_ble.c\")",
       "Bash(cp \"D:/github/my/WirelessPowermeter_/user/app_user_config.h\" \"D:/github/my/WirelessPowermeter/user/app_user_config.h\")",
       "Bash(cp \"D:/github/my/WirelessPowermeter_/user/n32wb03x_it.c\" \"D:/github/my/WirelessPowermeter/user/n32wb03x_it.c\")",
-      "Bash(cp \"D:/github/my/WirelessPowermeter_/SCGUI/APP/app_gui.c\" \"D:/github/my/WirelessPowermeter/SCGUI/APP/app_gui.c\")"
+      "Bash(cp \"D:/github/my/WirelessPowermeter_/SCGUI/APP/app_gui.c\" \"D:/github/my/WirelessPowermeter/SCGUI/APP/app_gui.c\")",
+      "Bash(where pdftotext *)",
+      "Bash(pdftotext -layout -l 30 CN_UM_N32WB03x_Series_User_Manual_V1.5.pdf toc_head.txt)",
+      "Bash(pdftotext -layout -f 371 -l 400 CN_UM_N32WB03x_Series_User_Manual_V1.5.pdf rtc_chapter.txt)",
+      "Bash(pdftotext -raw -f 371 -l 400 CN_UM_N32WB03x_Series_User_Manual_V1.5.pdf rtc_chapter_raw.txt)",
+      "Bash(pdftotext -raw -f 95 -l 130 CN_UM_N32WB03x_Series_User_Manual_V1.5.pdf rcc_chapter.txt)",
+      "Bash(pdftotext -raw CN_UM_N32WB03x_Series_User_Manual_V1.5.pdf all.txt)"
     ]
   }
 }

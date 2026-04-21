@@ -11,6 +11,15 @@ extern "C" {
  * start a periodic wake-up that fires every second. */
 void app_rtc_init(void);
 
+/* Override the smooth-calibration ppm correction picked automatically at
+ * init. Positive values speed the RTC up; negative ones slow it down.
+ * Useful range: roughly -487..+488 ppm. */
+void app_rtc_set_calibration_ppm(int32_t ppm);
+
+/* The ppm correction currently programmed (clamped to the calibrator's
+ * achievable range). */
+int32_t app_rtc_get_calibration_ppm(void);
+
 /* Seed the epoch counter from a Unix timestamp (seconds since 1970-01-01). */
 void app_rtc_set_unix(uint64_t unix_time);
 

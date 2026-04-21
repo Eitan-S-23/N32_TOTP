@@ -84,13 +84,6 @@ int main(void)
      * its own low-speed-clock configuration. */
     app_ble_init();
     rf_tx_power_set(TX_POWER_MAX_VAL);
-	
-    /* Let BLE run its async init state machine (gapm reset → peripheral
-     * config → LSI enable). A few hundred ms is plenty. */
-//    for (uint32_t i = 0; i < 50000; i++)
-//    {
-//        rwip_schedule();
-//    }
 
     RCC_Configuration();
     NVIC_Configuration();
