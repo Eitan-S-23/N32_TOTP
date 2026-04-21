@@ -7,11 +7,21 @@
  *   y=82..88  : progress bar  (6 px)
  *   y=92..104 : status text   (font_12)
  *   y=108..120: BLE RX debug  (font_12) — last write's count/len/hex
+ *
+ * Key map (xpt2046.c EXTI4_12_IRQHandler sets the global `key`):
+ *   CODE screen  — KEY3 → switch to QR screen (requires key+time set)
+ *   QR screen    — KEY1 → back to CODE screen
+ * We poll `key` edge-triggered at the top of app_gui_task; the ISR never
+ * clears it so we must zero it after handling to avoid repeat fires.
  */
 #include "app_gui.h"
 #include "app_totp.h"
 #include "app_rtc.h"
 #include "app_profile/app_totp_ble.h"
+#include "app_user_config.h"
+#include "qrcodegen.h"
+#include "xpt2046.h"
+#include "lcd.h"
 
 #include <stdio.h>
 #include <string.h>
@@ -47,6 +57,12 @@ static char buf_debug[48];
 static char buf_title[16];
 
 static uint32_t s_cached_time_sod = 0xFFFFFFFFu;  /* seconds-of-day for HH:MM:SS label */
+
+/* ---- QR screen state ---------------------------------------------------- */
+
+enum { GUI_MODE_CODE = 0, GUI_MODE_QR = 1 };
+static uint8_t s_mode = GUI_MODE_CODE;
+static uint8_t s_qrbuf[QR_BUFSIZE_MAX];
 
 static void format_code(char *out, uint32_t code)
 {
@@ -223,6 +239,146 @@ static void render_debug(void)
     sc_set_label_text(&debug_label, buf_debug, C_CYAN, &lv_font_12, ALIGN_CENTER);
 }
 
+/* ---- QR screen ---------------------------------------------------------- */
+
+static void invalidate_all_caches(void)
+{
+    s_cached_counter  = 0xFFFFFFFFu;
+    s_cached_time_sod = 0xFFFFFFFFu;
+    s_cached_ble      = 0xFF;
+    s_cached_rx_count = 0xFFFFFFFFu;
+    s_cached_rx_len   = 0xFFFF;
+    s_cached_add      = 0xFFFFFFFFu;
+    s_cached_key_ok   = 0xFF;
+    s_cached_time_ok  = 0xFF;
+}
+
+/* Re-mark every widget dirty so sc_widget_draw_screen repaints them on the
+ * next main-loop iteration. sc_set_label_text already sets OBJ_FLAG_ACTIVE
+ * when text changes, but on QR→CODE return the cached text may be identical
+ * and render_* would skip the update — so we kick every widget here. */
+static void force_redraw_widgets(void)
+{
+    title_frame.base.Flag  |= OBJ_FLAG_ACTIVE;
+    title_label.base.Flag  |= OBJ_FLAG_ACTIVE;
+    ble_label.base.Flag    |= OBJ_FLAG_ACTIVE;
+    prev_label.base.Flag   |= OBJ_FLAG_ACTIVE;
+    curr_label.base.Flag   |= OBJ_FLAG_ACTIVE;
+    next_label.base.Flag   |= OBJ_FLAG_ACTIVE;
+    progress.base.Flag     |= OBJ_FLAG_ACTIVE;
+    status_label.base.Flag |= OBJ_FLAG_ACTIVE;
+    debug_label.base.Flag  |= OBJ_FLAG_ACTIVE;
+}
+
+/* Build an otpauth:// URI that Google / Microsoft Authenticator can import:
+ *   otpauth://totp/N32-TOTP?secret=BASE32&issuer=N32-TOTP&algorithm=SHA1&digits=6&period=30
+ * Secret is unpadded Base32 (both apps accept it). */
+static int build_otpauth_uri(char *out, int out_sz)
+{
+    const uint8_t *key = app_totp_ble_get_key();
+    uint32_t keylen    = app_totp_ble_get_keylen();
+    char b32[128];
+    int n;
+
+    if (keylen == 0) return -1;
+    n = base32_encode(key, (int)keylen, b32, sizeof(b32));
+    if (n < 0) return -1;
+
+    n = snprintf(out, out_sz,
+                 "otpauth://totp/%s?secret=%s&issuer=%s"
+                 "&algorithm=SHA1&digits=6&period=30",
+                 CUSTOM_DEVICE_NAME, b32, CUSTOM_DEVICE_NAME);
+    if (n < 0 || n >= out_sz) return -1;
+    return n;
+}
+
+static void render_qr(void)
+{
+    char uri[220];
+    int uri_len, side, scale, qr_px, ox, oy, x, y;
+
+    /* Full-white canvas doubles as the QR quiet zone (≥ 4 modules on every
+     * side) since the QR is centered on a screen much larger than the code. */
+    LCD_Clear(WHITE);
+
+    uri_len = build_otpauth_uri(uri, sizeof(uri));
+    if (uri_len < 0) return;
+
+    side = qr_encode_bytes((const uint8_t *)uri, uri_len,
+                           s_qrbuf, sizeof(s_qrbuf));
+    if (side <= 0) return;
+
+    /* Largest integer scale that fits (side + 8-module margin) in the LCD
+     * height. Cap at 4 px/module — small QRs look silly pushed to 6+ px. */
+    scale = 128 / (side + 8);
+    if (scale < 1) scale = 1;
+    if (scale > 4) scale = 4;
+
+    qr_px = side * scale;
+    ox    = (LCD_SCREEN_WIDTH  - qr_px) / 2;
+    oy    = (LCD_SCREEN_HEIGHT - qr_px) / 2;
+
+    for (y = 0; y < side; y++)
+    {
+        for (x = 0; x < side; x++)
+        {
+            if (qr_get_module(s_qrbuf, side, x, y))
+            {
+                LCD_Fill((u16)(ox + x * scale),
+                         (u16)(oy + y * scale),
+                         (u16)(ox + x * scale + scale - 1),
+                         (u16)(oy + y * scale + scale - 1),
+                         BLACK);
+            }
+        }
+    }
+}
+
+static void enter_qr_mode(void)
+{
+    s_mode = GUI_MODE_QR;
+    render_qr();
+}
+
+static void enter_code_mode(void)
+{
+    s_mode = GUI_MODE_CODE;
+    LCD_Clear(C_WHITE);
+    invalidate_all_caches();
+    force_redraw_widgets();
+}
+
+static void poll_keys(void)
+{
+    uint8_t pressed;
+
+    /* Atomic-ish read/clear — `key` is a single byte written by an ISR.
+     * Even if a second press races in between, missing one of the same
+     * code in a 250 ms window is benign. */
+    pressed = key;
+    if (pressed == 0) return;
+    key = 0;
+
+    if (s_mode == GUI_MODE_CODE)
+    {
+        /* KEY3 → QR, gated on having a key AND a time. `pressed == 5` covers
+         * the xpt2046 alt-mode mapping after a prior KEY1 press toggled
+         * key_flag — we accept either so the UX isn't surprising. */
+        if ((pressed == 3 || pressed == 5) &&
+            app_totp_ble_get_keylen() > 0 && app_rtc_is_time_set())
+        {
+            enter_qr_mode();
+        }
+    }
+    else /* GUI_MODE_QR */
+    {
+        if (pressed == 2 || pressed == 4)
+        {
+            enter_code_mode();
+        }
+    }
+}
+
 void app_gui_init(void *screen)
 {
     sc_create_canvas(screen, &canvas, 0, 0,
@@ -267,6 +423,16 @@ void app_gui_task(void *arg)
     Event *e = (Event *)arg;
 
     if (e->type != EVENT_TYPE_TIMER)
+    {
+        return;
+    }
+
+    /* Edge-detect KEY2/KEY3 first — this is also how we return from QR. */
+    poll_keys();
+
+    /* QR screen bypasses SCGUI — widgets stay un-dirty so
+     * sc_widget_draw_screen won't overpaint the QR. */
+    if (s_mode == GUI_MODE_QR)
     {
         return;
     }

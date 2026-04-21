@@ -38,6 +38,7 @@
 ".\objects\n32wb03x_it.o"
 ".\objects\app_totp.o"
 ".\objects\app_rtc.o"
+".\objects\qrcodegen.o"
 ".\objects\lcd.o"
 ".\objects\dfu_delay.o"
 ".\objects\lv_font_12.o"

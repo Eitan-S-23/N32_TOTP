@@ -64,4 +64,14 @@ bool XPT2046IsPress(void);
 int XPT2046ReadY(void);
 int XPT2046ReadX(void);
 
+/* Last key press code, set by EXTI4_12_IRQHandler:
+ *     1 = KEY1 (on GPIOB.11)
+ *     2 = KEY2 (on GPIOB.12, when key_flag==0)
+ *     3 = KEY3 (on GPIOB.13, when key_flag==0)
+ *     4/5 = KEY2/KEY3 with key_flag!=0 (alt mode)
+ * Consumers MUST clear to 0 after handling to act on edges only — the ISR
+ * never resets it, so a 250 ms GUI poll would otherwise fire repeatedly. */
+extern volatile uint8_t key;
+extern volatile uint8_t key_flag;
+
 #endif /* __XPT2046_H__ */

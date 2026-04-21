@@ -26,6 +26,7 @@
 #include "app_totp.h"
 #include "app/app_gui.h"
 #include "lcd.h"
+#include "xpt2046.h"
 #include "dfu_delay.h"
 
 extern volatile uint8_t spi_dma_tx_complete;
@@ -98,6 +99,13 @@ int main(void)
     /* RTC: enable the domain clock, program prescalers + 1 Hz wake-up.
      * BLE has already brought LSI up by this point. */
     app_rtc_init();
+
+    /* Front-panel keys (KEY1/KEY2/KEY3 on EXTI4_12). Must come AFTER BLE
+     * init — ns_ble_stack_vtor_init captures the user's EXTI4_12 handler
+     * from the vector table and dispatches to it via user_EXTI4_12_IRQHandler.
+     * Configuring the EXTI lines before BLE runs its vector capture works
+     * too, but this order keeps all IRQ wiring sequential in one place. */
+    app_key_configuration();
 
     LCD_Init();
     LCD_Display_Dir(USE_LCM_DIR);

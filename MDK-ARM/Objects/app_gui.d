@@ -53,4 +53,8 @@
 .\objects\app_gui.o: ..\middlewares\Nationstech\ble_library\ns_ble_stack\ip\ble\hl\api\rwble_hl_error.h
 .\objects\app_gui.o: ..\user\app_profile\rwapp_config.h
 .\objects\app_gui.o: ..\middlewares\Nationstech\ble_library\ns_ble_stack\ip\ble\hl\inc\rwprf_config.h
+.\objects\app_gui.o: ..\user\qrcodegen.h
+.\objects\app_gui.o: ..\hardware\XPT2046\xpt2046.h
+.\objects\app_gui.o: ..\hardware\LCD\lcd.h
+.\objects\app_gui.o: ..\user\main.h
 .\objects\app_gui.o: D:\install\keil5 mdk\ARM\ARMCC\Bin\..\include\string.h

@@ -140,4 +140,5 @@
 .\objects\main.o: ..\SCGUI\sc_menu_table.h
 .\objects\main.o: ..\SCGUI\sc_key_table.h
 .\objects\main.o: ..\hardware\LCD\lcd.h
+.\objects\main.o: ..\hardware\XPT2046\xpt2046.h
 .\objects\main.o: ..\system\delay\dfu_delay.h
