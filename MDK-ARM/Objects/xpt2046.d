@@ -1,0 +1,30 @@
+.\objects\xpt2046.o: ..\hardware\XPT2046\xpt2046.c
+.\objects\xpt2046.o: ..\hardware\XPT2046\xpt2046.h
+.\objects\xpt2046.o: ..\firmware\CMSIS\device\n32wb03x.h
+.\objects\xpt2046.o: ..\firmware\CMSIS\core\core_cm0.h
+.\objects\xpt2046.o: D:\install\keil5 mdk\ARM\ARMCC\Bin\..\include\stdint.h
+.\objects\xpt2046.o: ..\firmware\CMSIS\core\core_cmInstr.h
+.\objects\xpt2046.o: ..\firmware\CMSIS\core\core_cmFunc.h
+.\objects\xpt2046.o: ..\firmware\CMSIS\device\system_n32wb03x.h
+.\objects\xpt2046.o: D:\install\keil5 mdk\ARM\ARMCC\Bin\..\include\stdbool.h
+.\objects\xpt2046.o: ..\firmware\CMSIS\device\n32wb03x_conf.h
+.\objects\xpt2046.o: ..\firmware\n32wb03x_std_periph_driver\inc\n32wb03x_adc.h
+.\objects\xpt2046.o: ..\firmware\CMSIS\device\n32wb03x.h
+.\objects\xpt2046.o: ..\firmware\n32wb03x_std_periph_driver\inc\n32wb03x_crc.h
+.\objects\xpt2046.o: ..\firmware\n32wb03x_std_periph_driver\inc\n32wb03x_dma.h
+.\objects\xpt2046.o: ..\firmware\n32wb03x_std_periph_driver\inc\n32wb03x_exti.h
+.\objects\xpt2046.o: ..\firmware\n32wb03x_std_periph_driver\inc\n32wb03x_gpio.h
+.\objects\xpt2046.o: ..\firmware\n32wb03x_std_periph_driver\inc\n32wb03x_i2c.h
+.\objects\xpt2046.o: ..\firmware\n32wb03x_std_periph_driver\inc\n32wb03x_iwdg.h
+.\objects\xpt2046.o: ..\firmware\n32wb03x_std_periph_driver\inc\n32wb03x_pwr.h
+.\objects\xpt2046.o: ..\firmware\n32wb03x_std_periph_driver\inc\n32wb03x_rcc.h
+.\objects\xpt2046.o: ..\firmware\n32wb03x_std_periph_driver\inc\n32wb03x_rtc.h
+.\objects\xpt2046.o: ..\firmware\n32wb03x_std_periph_driver\inc\n32wb03x_spi.h
+.\objects\xpt2046.o: ..\firmware\n32wb03x_std_periph_driver\inc\n32wb03x_tim.h
+.\objects\xpt2046.o: ..\firmware\n32wb03x_std_periph_driver\inc\n32wb03x_usart.h
+.\objects\xpt2046.o: ..\firmware\n32wb03x_std_periph_driver\inc\n32wb03x_lpuart.h
+.\objects\xpt2046.o: ..\firmware\n32wb03x_std_periph_driver\inc\n32wb03x_wwdg.h
+.\objects\xpt2046.o: ..\firmware\n32wb03x_std_periph_driver\inc\n32wb03x_irgen.h
+.\objects\xpt2046.o: ..\firmware\n32wb03x_std_periph_driver\inc\n32wb03x_keyscan.h
+.\objects\xpt2046.o: ..\firmware\n32wb03x_std_periph_driver\inc\n32wb03x_qflash.h
+.\objects\xpt2046.o: ..\firmware\n32wb03x_std_periph_driver\inc\misc.h

@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TOTP Generator</title>
+  <style>
+    :root {
+      --bg: #fafafa;
+      --surface: #ffffff;
+      --text: #262626;
+      --muted: #8e8e8e;
+      --border: #dbdbdb;
+      --border-strong: #a8a8a8;
+      --accent: #262626;
+      --ok: #2b8a3e;
+      --err: #c7254e;
+    }
+
+    * { box-sizing: border-box; }
+
+    [v-cloak] { display: none; }
+
+    html, body {
+      height: 100%;
+      margin: 0;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+                   "Helvetica Neue", Helvetica, Arial, sans-serif;
+      font-size: 14px;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    main {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      padding: 48px 20px;
+    }
+
+    .card {
+      width: 100%;
+      max-width: 440px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+    }
+
+    .card > section {
+      padding: 28px 32px;
+      border-bottom: 1px solid var(--border);
+    }
+    .card > section:last-child { border-bottom: none; }
+
+    h1 {
+      margin: 0;
+      font-size: 18px;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      text-align: center;
+    }
+    h1 small {
+      display: block;
+      margin-top: 6px;
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    label {
+      display: block;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    .field + .field { margin-top: 16px; }
+
+    .row { display: flex; gap: 12px; }
+    .row > .field { flex: 1; margin-top: 0; }
+
+    input[type="text"], input[type="number"] {
+      width: 100%;
+      padding: 10px 12px;
+      font: inherit;
+      color: var(--text);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      outline: none;
+      transition: border-color 120ms ease;
+    }
+    input[type="text"]:focus, input[type="number"]:focus {
+      border-color: var(--border-strong);
+    }
+
+    .token-display {
+      text-align: center;
+    }
+    .token {
+      font-family: "SF Mono", "Menlo", "Consolas", "Liberation Mono", monospace;
+      font-size: 44px;
+      font-weight: 300;
+      letter-spacing: 0.18em;
+      color: var(--text);
+      user-select: all;
+      padding-right: 0.18em; /* compensate tracking */
+    }
+    .token-meta {
+      margin-top: 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+    .progress {
+      flex: 1;
+      height: 2px;
+      background: var(--border);
+      position: relative;
+      overflow: hidden;
+    }
+    .progress > span {
+      position: absolute;
+      inset: 0 auto 0 0;
+      background: var(--accent);
+      transition: width 900ms linear;
+    }
+
+    .copy-btn, .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      font: inherit;
+      font-size: 12px;
+      color: var(--text);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      cursor: pointer;
+      transition: border-color 120ms ease, background 120ms ease;
+    }
+    .copy-btn:hover, .btn:hover { border-color: var(--border-strong); }
+    .copy-btn:active, .btn:active { background: #f4f4f4; }
+    .btn:disabled {
+      color: var(--muted);
+      cursor: not-allowed;
+      background: #f7f7f7;
+    }
+    .btn.primary {
+      color: #fff;
+      background: var(--accent);
+      border-color: var(--accent);
+    }
+    .btn.primary:hover { background: #000; }
+    .btn.primary:disabled {
+      background: #c5c5c5;
+      border-color: #c5c5c5;
+      color: #fff;
+    }
+
+    .qr-wrap {
+      display: flex;
+      justify-content: center;
+      padding: 16px;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 3px;
+    }
+    .qr-wrap svg { display: block; width: 220px; height: 220px; }
+
+    .link-btn {
+      background: none;
+      border: none;
+      padding: 0;
+      font: inherit;
+      font-size: 11px;
+      letter-spacing: 0.06em;
+      color: var(--muted);
+      cursor: pointer;
+      text-transform: uppercase;
+    }
+    .link-btn:hover { color: var(--text); }
+
+    .label-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+    }
+
+    .modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      z-index: 100;
+    }
+    .modal-card {
+      width: 100%;
+      max-width: 380px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+    .modal-card header {
+      padding: 14px 18px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+    }
+    .video-wrap {
+      position: relative;
+      background: #000;
+      aspect-ratio: 1 / 1;
+      overflow: hidden;
+    }
+    .video-wrap video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .video-wrap::after {
+      content: '';
+      position: absolute;
+      inset: 14%;
+      border: 1px solid rgba(255,255,255,0.85);
+      pointer-events: none;
+    }
+    .modal-card footer {
+      padding: 14px 18px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      gap: 10px;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+      color: var(--muted);
+    }
+    .scan-msg {
+      padding: 0 18px;
+      margin: 10px 0 0;
+      font-size: 12px;
+      color: var(--muted);
+      min-height: 1.2em;
+    }
+    .scan-msg.err { color: var(--err); }
+    .scan-msg.ok { color: var(--ok); }
+
+    .icon-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      padding: 0;
+      background: none;
+      border: 1px solid transparent;
+      border-radius: 3px;
+      color: var(--muted);
+      cursor: pointer;
+      transition: color 120ms ease, border-color 120ms ease;
+    }
+    .icon-btn:hover { color: var(--text); border-color: var(--border); }
+    .icon-btn svg { width: 18px; height: 18px; display: block; }
+
+    .import-flash {
+      margin-top: 8px;
+      font-size: 12px;
+      color: var(--ok);
+      letter-spacing: 0.04em;
+    }
+
+    .uri {
+      margin-top: 12px;
+      padding: 8px 10px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      font-family: "SF Mono", "Menlo", "Consolas", monospace;
+      font-size: 11px;
+      color: var(--muted);
+      word-break: break-all;
+      user-select: all;
+    }
+    .error {
+      margin-top: 8px;
+      font-size: 12px;
+      color: var(--err);
+    }
+
+    /* ---- BLE panel ---- */
+    .ble-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+    .ble-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+    .ble-dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: #c5c5c5;
+    }
+    .ble-status.connected .ble-dot { background: var(--ok); }
+    .ble-status.error     .ble-dot { background: var(--err); }
+    .ble-status.scanning  .ble-dot,
+    .ble-status.connecting .ble-dot {
+      background: #f5a623;
+      animation: ble-pulse 1.1s ease-in-out infinite;
+    }
+    @keyframes ble-pulse {
+      0%, 100% { opacity: 1; }
+      50%      { opacity: 0.35; }
+    }
+    .ble-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 12px;
+    }
+    .ble-msg {
+      margin-top: 10px;
+      font-size: 12px;
+      color: var(--muted);
+      word-break: break-all;
+    }
+    .ble-msg.ok { color: var(--ok); }
+    .ble-msg.err { color: var(--err); }
+    .ble-note {
+      margin-top: 10px;
+      font-size: 11px;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+    .check-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 12px;
+      font-size: 12px;
+      color: var(--text);
+    }
+    .check-row input[type="checkbox"] {
+      width: 14px;
+      height: 14px;
+      margin: 0;
+    }
+
+    footer {
+      padding: 24px 16px;
+      text-align: center;
+      font-size: 12px;
+      color: var(--muted);
+    }
+    footer a {
+      color: var(--muted);
+      text-decoration: none;
+      border-bottom: 1px solid var(--border);
+    }
+    footer a:hover { color: var(--text); }
+
+    @media (max-width: 480px) {
+      main { padding: 24px 12px; }
+      .card > section { padding: 20px; }
+      .token { font-size: 36px; }
+    }
+  </style>
+</head>
+<body>
+
+  <script defer src="js/assets/vue-3.4.20.global.prod.js"></script>
+  <script defer src="js/assets/otpauth-9.1.3.min.js"></script>
+  <script defer src="js/assets/clipboard-2.0.6.min.js"></script>
+  <script defer src="js/assets/qrcode-generator-1.4.4.min.js"></script>
+  <script defer src="js/assets/jsQR-1.4.0.min.js"></script>
+  <script defer src="js/app.js?v=2.0"></script>
+
+  <main>
+    <div id="app" class="card" v-cloak>
+
+      <section>
+        <h1>TOTP Generator<small>Time-based one-time password</small></h1>
+      </section>
+
+      <section class="token-display">
+        <div class="token" id="token">{{ token }}</div>
+        <div class="token-meta">
+          <div class="progress"><span :style="{ width: (updatingIn / period * 100) + '%' }"></span></div>
+          <span>{{ updatingIn }}s</span>
+          <button class="copy-btn" id="clipboard-button" data-clipboard-target="#token" type="button">Copy</button>
+        </div>
+      </section>
+
+      <section>
+        <div class="ble-header">
+          <label style="margin:0">N32-TOTP Device</label>
+          <span class="ble-status" :class="bleStatus">
+            <span class="ble-dot"></span>
+            <span>{{ bleStatusText }}<template v-if="bleConnected && bleDeviceName"> · {{ bleDeviceName }}</template></span>
+          </span>
+        </div>
+
+        <div class="ble-actions">
+          <button class="btn primary"
+                  type="button"
+                  :disabled="!bleSupported || bleBusy || bleConnected"
+                  @click="bleConnect">
+            {{ bleConnected ? 'Connected' : (bleBusy ? 'Working…' : 'Connect') }}
+          </button>
+          <button class="btn"
+                  type="button"
+                  :disabled="!bleConnected"
+                  @click="sendTimeToDevice">
+            Re-sync time
+          </button>
+          <button class="btn"
+                  type="button"
+                  :disabled="!bleConnected"
+                  @click="sendKeyToDevice">
+            Send key now
+          </button>
+          <button class="btn"
+                  type="button"
+                  :disabled="!bleConnected"
+                  @click="bleDisconnect">
+            Disconnect
+          </button>
+        </div>
+
+        <label class="check-row">
+          <input type="checkbox" v-model="sendKeyOnConnect">
+          <span>Also send the secret key when connecting</span>
+        </label>
+
+        <p v-if="bleError" class="ble-msg err">{{ bleError }}</p>
+        <p v-else-if="bleMessage" class="ble-msg ok">{{ bleMessage }}</p>
+
+        <p v-if="!bleSupported" class="ble-note">
+          Web Bluetooth is not available in this browser. Use desktop
+          Chrome / Edge, or Chrome on Android (iOS is not supported).
+        </p>
+        <p v-else class="ble-note">
+          Connect pushes UTC time + UTC+8 offset to the MCU on every
+          connection. The secret key only leaves this page when you tick
+          the box above or press <em>Send key now</em>.
+        </p>
+      </section>
+
+      <section>
+        <div class="field">
+          <div class="label-row">
+            <label for="secret">Secret Key</label>
+            <button type="button" class="icon-btn" @click="openScanner" title="Scan QR" aria-label="Scan QR">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 7V5a2 2 0 0 1 2-2h2"/>
+                <path d="M17 3h2a2 2 0 0 1 2 2v2"/>
+                <path d="M21 17v2a2 2 0 0 1-2 2h-2"/>
+                <path d="M7 21H5a2 2 0 0 1-2-2v-2"/>
+                <rect x="7" y="7" width="4" height="4"/>
+                <rect x="13" y="7" width="4" height="4"/>
+                <rect x="7" y="13" width="4" height="4"/>
+                <path d="M13 13h1v1h-1zM16 13h1v1h-1zM13 16h1v1h-1zM16 16h1v1h-1z"/>
+              </svg>
+            </button>
+          </div>
+          <input id="secret" type="text" v-model="secret_key" placeholder="Base32-encoded secret" autocomplete="off" spellcheck="false">
+          <p v-if="importFlash" class="import-flash">✓ Imported from QR</p>
+        </div>
+
+        <div class="row" style="margin-top:16px">
+          <div class="field">
+            <label for="issuer">Issuer</label>
+            <input id="issuer" type="text" v-model="issuer" placeholder="MyCompany" autocomplete="off" spellcheck="false">
+          </div>
+          <div class="field">
+            <label for="account">Account</label>
+            <input id="account" type="text" v-model="account" placeholder="alice@example.com" autocomplete="off" spellcheck="false">
+          </div>
+        </div>
+
+        <div class="row" style="margin-top:16px">
+          <div class="field">
+            <label for="digits">Digits</label>
+            <input id="digits" type="text" v-model="digits" inputmode="numeric">
+          </div>
+          <div class="field">
+            <label for="period">Period (s)</label>
+            <input id="period" type="text" v-model="period" inputmode="numeric">
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <label>Scan with Google / Microsoft Authenticator</label>
+        <div class="qr-wrap">
+          <div id="qrcode"></div>
+        </div>
+        <p v-if="qrError" class="error">{{ qrError }}</p>
+        <div v-else class="uri">{{ otpauthUri }}</div>
+      </section>
+
+      <div class="modal" v-if="scanning" @click.self="closeScanner">
+        <div class="modal-card" @click.stop>
+          <header>
+            <span>Scan QR Code</span>
+            <button type="button" class="icon-btn" @click="closeScanner" title="Close" aria-label="Close">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="6" y1="6" x2="18" y2="18"/>
+                <line x1="18" y1="6" x2="6" y2="18"/>
+              </svg>
+            </button>
+          </header>
+          <div class="video-wrap">
+            <video ref="video" autoplay playsinline muted></video>
+          </div>
+          <p class="scan-msg" :class="{ err: scanError, ok: scanOk }">{{ scanMsg }}</p>
+          <footer>
+            <label class="icon-btn" style="cursor:pointer" title="Upload image" aria-label="Upload image">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                <polyline points="17 8 12 3 7 8"/>
+                <line x1="12" y1="3" x2="12" y2="15"/>
+              </svg>
+              <input type="file" accept="image/*" @change="onImageFile" hidden>
+            </label>
+            <span>Point camera at the QR</span>
+          </footer>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <footer>
+    Source on <a href="https://github.com/Eitan-S-23/totp-generator">Github</a>.
+  </footer>
+
+</body>
+</html>

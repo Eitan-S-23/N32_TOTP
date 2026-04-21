@@ -1,0 +1,30 @@
+.\objects\dfu_delay.o: ..\system\delay\dfu_delay.c
+.\objects\dfu_delay.o: ..\system\delay\dfu_delay.h
+.\objects\dfu_delay.o: D:\install\keil5 mdk\ARM\ARMCC\Bin\..\include\stdint.h
+.\objects\dfu_delay.o: ..\firmware\CMSIS\device\n32wb03x.h
+.\objects\dfu_delay.o: ..\firmware\CMSIS\core\core_cm0.h
+.\objects\dfu_delay.o: ..\firmware\CMSIS\core\core_cmInstr.h
+.\objects\dfu_delay.o: ..\firmware\CMSIS\core\core_cmFunc.h
+.\objects\dfu_delay.o: ..\firmware\CMSIS\device\system_n32wb03x.h
+.\objects\dfu_delay.o: D:\install\keil5 mdk\ARM\ARMCC\Bin\..\include\stdbool.h
+.\objects\dfu_delay.o: ..\firmware\CMSIS\device\n32wb03x_conf.h
+.\objects\dfu_delay.o: ..\firmware\n32wb03x_std_periph_driver\inc\n32wb03x_adc.h
+.\objects\dfu_delay.o: ..\firmware\CMSIS\device\n32wb03x.h
+.\objects\dfu_delay.o: ..\firmware\n32wb03x_std_periph_driver\inc\n32wb03x_crc.h
+.\objects\dfu_delay.o: ..\firmware\n32wb03x_std_periph_driver\inc\n32wb03x_dma.h
+.\objects\dfu_delay.o: ..\firmware\n32wb03x_std_periph_driver\inc\n32wb03x_exti.h
+.\objects\dfu_delay.o: ..\firmware\n32wb03x_std_periph_driver\inc\n32wb03x_gpio.h
+.\objects\dfu_delay.o: ..\firmware\n32wb03x_std_periph_driver\inc\n32wb03x_i2c.h
+.\objects\dfu_delay.o: ..\firmware\n32wb03x_std_periph_driver\inc\n32wb03x_iwdg.h
+.\objects\dfu_delay.o: ..\firmware\n32wb03x_std_periph_driver\inc\n32wb03x_pwr.h
+.\objects\dfu_delay.o: ..\firmware\n32wb03x_std_periph_driver\inc\n32wb03x_rcc.h
+.\objects\dfu_delay.o: ..\firmware\n32wb03x_std_periph_driver\inc\n32wb03x_rtc.h
+.\objects\dfu_delay.o: ..\firmware\n32wb03x_std_periph_driver\inc\n32wb03x_spi.h
+.\objects\dfu_delay.o: ..\firmware\n32wb03x_std_periph_driver\inc\n32wb03x_tim.h
+.\objects\dfu_delay.o: ..\firmware\n32wb03x_std_periph_driver\inc\n32wb03x_usart.h
+.\objects\dfu_delay.o: ..\firmware\n32wb03x_std_periph_driver\inc\n32wb03x_lpuart.h
+.\objects\dfu_delay.o: ..\firmware\n32wb03x_std_periph_driver\inc\n32wb03x_wwdg.h
+.\objects\dfu_delay.o: ..\firmware\n32wb03x_std_periph_driver\inc\n32wb03x_irgen.h
+.\objects\dfu_delay.o: ..\firmware\n32wb03x_std_periph_driver\inc\n32wb03x_keyscan.h
+.\objects\dfu_delay.o: ..\firmware\n32wb03x_std_periph_driver\inc\n32wb03x_qflash.h
+.\objects\dfu_delay.o: ..\firmware\n32wb03x_std_periph_driver\inc\misc.h

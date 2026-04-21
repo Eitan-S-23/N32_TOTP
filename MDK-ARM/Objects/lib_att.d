@@ -1,0 +1,63 @@
+.\objects\lib_att.o: ..\middlewares\Nationstech\ble_library\ns_ble_stack\ip\ble\hl\src\att\lib_att.c
+.\objects\lib_att.o: ..\middlewares\Nationstech\ble_library\ns_ble_stack\ip\ble\hl\src\gatt\gattm_int.h
+.\objects\lib_att.o: ..\middlewares\Nationstech\ble_library\ns_ble_stack\modules\ke\api\ke_task.h
+.\objects\lib_att.o: D:\install\keil5 mdk\ARM\ARMCC\Bin\..\include\stdint.h
+.\objects\lib_att.o: D:\install\keil5 mdk\ARM\ARMCC\Bin\..\include\stdbool.h
+.\objects\lib_att.o: ..\middlewares\Nationstech\ble_library\ns_ble_stack\modules\rwip\api\rwip_config.h
+.\objects\lib_att.o: ..\firmware\CMSIS\device\n32wb03x.h
+.\objects\lib_att.o: ..\firmware\CMSIS\core\core_cm0.h
+.\objects\lib_att.o: ..\firmware\CMSIS\core\core_cmInstr.h
+.\objects\lib_att.o: ..\firmware\CMSIS\core\core_cmFunc.h
+.\objects\lib_att.o: ..\firmware\CMSIS\device\system_n32wb03x.h
+.\objects\lib_att.o: ..\firmware\CMSIS\device\n32wb03x_conf.h
+.\objects\lib_att.o: ..\firmware\n32wb03x_std_periph_driver\inc\n32wb03x_adc.h
+.\objects\lib_att.o: ..\firmware\CMSIS\device\n32wb03x.h
+.\objects\lib_att.o: ..\firmware\n32wb03x_std_periph_driver\inc\n32wb03x_crc.h
+.\objects\lib_att.o: ..\firmware\n32wb03x_std_periph_driver\inc\n32wb03x_dma.h
+.\objects\lib_att.o: ..\firmware\n32wb03x_std_periph_driver\inc\n32wb03x_exti.h
+.\objects\lib_att.o: ..\firmware\n32wb03x_std_periph_driver\inc\n32wb03x_gpio.h
+.\objects\lib_att.o: ..\firmware\n32wb03x_std_periph_driver\inc\n32wb03x_i2c.h
+.\objects\lib_att.o: ..\firmware\n32wb03x_std_periph_driver\inc\n32wb03x_iwdg.h
+.\objects\lib_att.o: ..\firmware\n32wb03x_std_periph_driver\inc\n32wb03x_pwr.h
+.\objects\lib_att.o: ..\firmware\n32wb03x_std_periph_driver\inc\n32wb03x_rcc.h
+.\objects\lib_att.o: ..\firmware\n32wb03x_std_periph_driver\inc\n32wb03x_rtc.h
+.\objects\lib_att.o: ..\firmware\n32wb03x_std_periph_driver\inc\n32wb03x_spi.h
+.\objects\lib_att.o: ..\firmware\n32wb03x_std_periph_driver\inc\n32wb03x_tim.h
+.\objects\lib_att.o: ..\firmware\n32wb03x_std_periph_driver\inc\n32wb03x_usart.h
+.\objects\lib_att.o: ..\firmware\n32wb03x_std_periph_driver\inc\n32wb03x_lpuart.h
+.\objects\lib_att.o: ..\firmware\n32wb03x_std_periph_driver\inc\n32wb03x_wwdg.h
+.\objects\lib_att.o: ..\firmware\n32wb03x_std_periph_driver\inc\n32wb03x_irgen.h
+.\objects\lib_att.o: ..\firmware\n32wb03x_std_periph_driver\inc\n32wb03x_keyscan.h
+.\objects\lib_att.o: ..\firmware\n32wb03x_std_periph_driver\inc\n32wb03x_qflash.h
+.\objects\lib_att.o: ..\firmware\n32wb03x_std_periph_driver\inc\misc.h
+.\objects\lib_att.o: ..\user\app_user_config.h
+.\objects\lib_att.o: ..\middlewares\Nationstech\ble_library\ns_library\adv\ns_adv_data_def.h
+.\objects\lib_att.o: D:\install\keil5 mdk\ARM\ARMCC\Bin\..\include\stdio.h
+.\objects\lib_att.o: ..\middlewares\Nationstech\ble_library\ns_library\log\ns_log.h
+.\objects\lib_att.o: ..\middlewares\Nationstech\ble_library\ns_library\log\ns_log_usart.h
+.\objects\lib_att.o: ..\middlewares\Nationstech\ble_library\ns_ble_stack\ip\ble\ll\api\rwble_config.h
+.\objects\lib_att.o: ..\middlewares\Nationstech\ble_library\ns_ble_stack\ip\ble\hl\inc\rwble_hl_config.h
+.\objects\lib_att.o: ..\middlewares\Nationstech\ble_library\ns_ble_stack\modules\rwip\api\rwip_config.h
+.\objects\lib_att.o: ..\middlewares\Nationstech\ble_library\ns_ble_stack\ip\ble\hl\api\rwble_hl_error.h
+.\objects\lib_att.o: ..\user\app_profile\rwapp_config.h
+.\objects\lib_att.o: ..\middlewares\Nationstech\ble_library\ns_ble_stack\ip\ble\hl\inc\rwprf_config.h
+.\objects\lib_att.o: ..\middlewares\Nationstech\ble_library\ns_ble_stack\arch\compiler.h
+.\objects\lib_att.o: ..\firmware\CMSIS\core\core_cm0.h
+.\objects\lib_att.o: ..\middlewares\Nationstech\ble_library\ns_ble_stack\modules\ke\api\ke_msg.h
+.\objects\lib_att.o: D:\install\keil5 mdk\ARM\ARMCC\Bin\..\include\stddef.h
+.\objects\lib_att.o: ..\middlewares\Nationstech\ble_library\ns_ble_stack\arch\arch.h
+.\objects\lib_att.o: ..\middlewares\Nationstech\ble_library\ns_ble_stack\modules\common\api\co_list.h
+.\objects\lib_att.o: ..\middlewares\Nationstech\ble_library\ns_ble_stack\ip\ble\hl\api\gattm_task.h
+.\objects\lib_att.o: ..\middlewares\Nationstech\ble_library\ns_ble_stack\modules\rwip\api\rwip_task.h
+.\objects\lib_att.o: ..\middlewares\Nationstech\ble_library\ns_ble_stack\ip\ble\hl\api\att.h
+.\objects\lib_att.o: ..\middlewares\Nationstech\ble_library\ns_ble_stack\ip\ble\hl\api\gap.h
+.\objects\lib_att.o: ..\middlewares\Nationstech\ble_library\ns_ble_stack\ip\ble\hl\src\gatt\attm_db.h
+.\objects\lib_att.o: D:\install\keil5 mdk\ARM\ARMCC\Bin\..\include\string.h
+.\objects\lib_att.o: ..\middlewares\Nationstech\ble_library\ns_ble_stack\ip\ble\hl\inc\attm.h
+.\objects\lib_att.o: ..\middlewares\Nationstech\ble_library\ns_ble_stack\modules\common\api\co_error.h
+.\objects\lib_att.o: ..\middlewares\Nationstech\ble_library\ns_ble_stack\modules\common\api\co_bt.h
+.\objects\lib_att.o: ..\middlewares\Nationstech\ble_library\ns_ble_stack\modules\common\api\co_bt_defines.h
+.\objects\lib_att.o: ..\middlewares\Nationstech\ble_library\ns_ble_stack\modules\common\api\co_lmp.h
+.\objects\lib_att.o: ..\middlewares\Nationstech\ble_library\ns_ble_stack\modules\common\api\co_bt.h
+.\objects\lib_att.o: ..\middlewares\Nationstech\ble_library\ns_ble_stack\modules\common\api\co_hci.h
+.\objects\lib_att.o: ..\middlewares\Nationstech\ble_library\ns_ble_stack\modules\common\api\co_bt_defines.h
