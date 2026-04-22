@@ -28,15 +28,13 @@ Project File Date:  04/22/2026
 *** Using Compiler 'V5.06 update 5 (build 528)', folder: 'D:\install\keil5 mdk\ARM\ARMCC\Bin'
 Build target 'N32WB03x'
 compiling n32wb03x_it.c...
-compiling app_rtc.c...
-compiling app_gui.c...
-compiling app_totp_ble.c...
+compiling app_tasks.c...
 compiling main.c...
-..\user\main.c(107): warning:  #167-D: argument of type "void *" is incompatible with parameter of type "void (*)(int, int, uint16_t)"
+..\user\main.c(120): warning:  #167-D: argument of type "void *" is incompatible with parameter of type "void (*)(int, int, uint16_t)"
       SC_GUI_Init((void *)LCD_Fast_DrawPoint, C_WHITE, C_BLUE, C_BLACK,
 ..\user\main.c: 1 warning, 0 errors
 linking...
-Program Size: Code=40370 RO-data=21238 RW-data=620 ZI-data=15980  
+Program Size: Code=42804 RO-data=21240 RW-data=696 ZI-data=31776  
 After Build - User command #1: fromelf --bin --output=.\bin\beacon.bin .\Objects\beacon.axf
 ".\Objects\beacon.axf" - 0 Error(s), 1 Warning(s).
 
@@ -51,7 +49,7 @@ Package Vendor: Nationstech
   D:/install/keil5 mdk/ARM/PACK/Nationstech/N32WB03x_DFP.1.4.0/firmware/CMSIS/device
 
 <h2>Collection of Component Files used:</h2>
-Build Time Elapsed:  00:00:13
+Build Time Elapsed:  00:00:09
 </pre>
 </body>
 </html>

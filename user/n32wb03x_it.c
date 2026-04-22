@@ -38,6 +38,10 @@
 #include "n32wb03x_exti.h"
 #include "app_rtc.h"
 
+#include "FreeRTOS.h"
+#include "task.h"
+#include "app_tasks.h"
+
 extern volatile uint8_t spi_dma_tx_complete;
 extern volatile uint32_t system_tick;  // 全局tick计数器，由中断更新
 /** @addtogroup N32WB03X_StdPeriph_Template
@@ -66,26 +70,10 @@ void HardFault_Handler(void)
     }
 }
 
-/**
- * @brief  This function handles SVCall exception.
- */
-void SVC_Handler(void)
-{
-}
-
-/**
- * @brief  This function handles PendSV_Handler exception.
- */
-void PendSV_Handler(void)
-{
-}
-
-/**
- * @brief  This function handles SysTick Handler.
- */
-void SysTick_Handler(void)
-{
-}
+/* SVC_Handler, PendSV_Handler, SysTick_Handler are provided by the
+ * FreeRTOS Cortex-M0 port. FreeRTOSConfig.h aliases vPortSVCHandler /
+ * xPortPendSVHandler / xPortSysTickHandler to those vector names, so no
+ * stub is needed here. */
 
 /******************************************************************************/
 /*                 N32WB03X Peripherals Interrupt Handlers                     */
@@ -142,15 +130,24 @@ void TIM3_IRQHandler(void)
 
 /**
  * @brief  This function handles RTC wake-up interrupt request.
- *         Bumps the epoch-seconds counter each 1 Hz CK_SPRE tick.
+ *         Bumps the epoch-seconds counter each 1 Hz CK_SPRE tick, then
+ *         notifies totp_task so it can refresh the cached code.
  */
 void RTC_IRQHandler(void)
 {
     if (RTC_GetITStatus(RTC_INT_WUT) != RESET)
     {
+        BaseType_t higher = pdFALSE;
+
         app_rtc_on_wakeup();
         RTC_ClrIntPendingBit(RTC_INT_WUT);
         EXTI_ClrITPendBit(EXTI_LINE9);
+
+        if (g_totp_task_handle != NULL)
+        {
+            vTaskNotifyGiveFromISR(g_totp_task_handle, &higher);
+            portYIELD_FROM_ISR(higher);
+        }
     }
 }
 

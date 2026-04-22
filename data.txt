@@ -1,0 +1,109 @@
+========== N32 TOTP boot ==========
+[boot] app_ble_init
+ns_ble_evn_init
+ns_ble_task_init
+[boot] rf_tx_power_set
+[boot] RCC/NVIC/TIM
+[boot] app_rtc_init
+[boot] keys
+[boot] LCD
+[boot] SCGUI
+[boot] app_gui_init
+[boot] xTaskCreateStatic ble_task
+[boot] xTaskCreateStatic gui_task
+[boot] xTaskCreateStatic totp_task
+[boot] vTaskStartScheduler
+gapm_cmp_evt_handler, op = 1, status = 0
+APP_BLE_OS_READY
+gapm_cmp_evt_handler, op = 3, status = 0
+ns_ble_list_set_ral,ral_cnt:1
+set_ral:0,0,114,0,50
+lsi config,132005,6005 
+gapm_gen_rand_nb_ind_handler
+gapm_cmp_evt_handler, op = 1a, status = 0
+gapm_cmp_evt_handler, op = 91, status = 0
+gapm_cmp_evt_handler, op = 28, status = 0
+ns_ble_add_svc
+gapm_profile_added_ind_handler,state 1
+gapm_cmp_evt_handler, op = 1b, status = 0
+ns_ble_add_svc
+totp_ble: add_service #1 (max_nb_att=7)
+gapm_profile_added_ind_handler,state 1
+gapm_cmp_evt_handler, op = 1b, status = 0
+app_create_advertising
+gapm_activity_created_ind_handler
+gapm_cmp_evt_handler, op = a0, status = 0
+ns_ble_adv_fsm_next,adv_state:1 
+app_set_adv_data
+gapm_cmp_evt_handler, op = a9, status = 0
+ns_ble_adv_fsm_next,adv_state:2 
+app_set_scan_rsp_data
+gapm_cmp_evt_handler, op = aa, status = 0
+ns_ble_adv_fsm_next,adv_state:3 
+app_start_advertising
+APP_ADV_MODE_FAST , duration: 0 x10 ms
+gapm_cmp_evt_handler, op = a4, status = 0
+ns_ble_adv_fsm_next,adv_state:5 
+**************HardFault ERROR:REG INFO**************.
+msp = 0x20008960.
+r0  = 0x0013ffec, 	r1   = 0x20005ae8.
+r2  = 0x20005b2c, 	r3   = 0x20005b2c.
+r12 = 0x0000006c, 	lr   = 0x0100a813.
+pc  = 0x0100a7d6, 	xpsr = 0x2100000f.
+ns_HardFault_Handler
+?
+
+========== N32 TOTP boot ==========
+[boot] app_ble_init
+ns_ble_evn_init
+ns_ble_task_init
+[boot] rf_tx_power_set
+[boot] RCC/NVIC/TIM
+[boot] app_rtc_init
+[boot] keys
+[boot] LCD
+[boot] SCGUI
+[boot] app_gui_init
+[boot] xTaskCreateStatic ble_task
+[boot] xTaskCreateStatic gui_task
+[boot] xTaskCreateStatic totp_task
+[boot] vTaskStartScheduler
+gapm_cmp_evt_handler, op = 1, status = 0
+APP_BLE_OS_READY
+gapm_cmp_evt_handler, op = 3, status = 0
+ns_ble_list_set_ral,ral_cnt:1
+set_ral:0,0,114,0,50
+lsi config,132015,6015 
+gapm_gen_rand_nb_ind_handler
+gapm_cmp_evt_handler, op = 1a, status = 0
+gapm_cmp_evt_handler, op = 91, status = 0
+gapm_cmp_evt_handler, op = 28, status = 0
+ns_ble_add_svc
+gapm_profile_added_ind_handler,state 1
+gapm_cmp_evt_handler, op = 1b, status = 0
+ns_ble_add_svc
+totp_ble: add_service #1 (max_nb_att=7)
+gapm_profile_added_ind_handler,state 1
+gapm_cmp_evt_handler, op = 1b, status = 0
+app_create_advertising
+gapm_activity_created_ind_handler
+gapm_cmp_evt_handler, op = a0, status = 0
+ns_ble_adv_fsm_next,adv_state:1 
+app_set_adv_data
+gapm_cmp_evt_handler, op = a9, status = 0
+ns_ble_adv_fsm_next,adv_state:2 
+app_set_scan_rsp_data
+gapm_cmp_evt_handler, op = aa, status = 0
+ns_ble_adv_fsm_next,adv_state:3 
+app_start_advertising
+APP_ADV_MODE_FAST , duration: 0 x10 ms
+gapm_cmp_evt_handler, op = a4, status = 0
+ns_ble_adv_fsm_next,adv_state:5 
+**************HardFault ERROR:REG INFO**************.
+msp = 0x20008960.
+r0  = 0x0013ffec, 	r1   = 0x20005ae8.
+r2  = 0x20005b2c, 	r3   = 0x20005b2c.
+r12 = 0x0000006c, 	lr   = 0x0100a813.
+pc  = 0x0100a7d6, 	xpsr = 0x2100000f.
+ns_HardFault_Handler
+?

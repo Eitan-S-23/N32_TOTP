@@ -341,7 +341,7 @@
               <MiscControls>--no-multibyte-chars</MiscControls>
               <Define>N32WB03X, USE_STDPERIPH_DRIVER</Define>
               <Undefine></Undefine>
-              <IncludePath>..\firmware\CMSIS\core;..\firmware\CMSIS\device;..\firmware\n32wb03x_std_periph_driver\inc;..\middlewares\Nationstech\ble_library\ns_ble_profile\dis\diss\api;..\middlewares\Nationstech\ble_library\ns_ble_profile\rdts;..\middlewares\Nationstech\ble_library\ns_ble_profile\rdts\rdtss\api;..\middlewares\Nationstech\ble_library\ns_ble_stack\ip\ahi\api;..\middlewares\Nationstech\ble_library\ns_ble_stack\ip\ble\hl\api;..\middlewares\Nationstech\ble_library\ns_ble_stack\ip\ble\hl\inc;..\middlewares\Nationstech\ble_library\ns_ble_stack\ip\ble\hl\src\gap;..\middlewares\Nationstech\ble_library\ns_ble_stack\ip\ble\hl\src\gatt;..\middlewares\Nationstech\ble_library\ns_ble_stack\ip\ble\hl\src\l2c;..\middlewares\Nationstech\ble_library\ns_ble_stack\ip\ble\ll\api;..\middlewares\Nationstech\ble_library\ns_ble_stack\ip\ble\ll\src;..\middlewares\Nationstech\ble_library\ns_ble_stack\ip\ble\ll\src\llc;..\middlewares\Nationstech\ble_library\ns_ble_stack\ip\ble\ll\src\lld;..\middlewares\Nationstech\ble_library\ns_ble_stack\ip\ble\ll\src\llm;..\middlewares\Nationstech\ble_library\ns_ble_stack\ip\em\api;..\middlewares\Nationstech\ble_library\ns_ble_stack\ip\hci\api;..\middlewares\Nationstech\ble_library\ns_ble_stack\ip\sch\api;..\middlewares\Nationstech\ble_library\ns_ble_stack\modules\aes\api;..\middlewares\Nationstech\ble_library\ns_ble_stack\modules\common\api;..\middlewares\Nationstech\ble_library\ns_ble_stack\modules\dbg\api;..\middlewares\Nationstech\ble_library\ns_ble_stack\modules\ecc_p256\api;..\middlewares\Nationstech\ble_library\ns_ble_stack\modules\h4tl\api;..\middlewares\Nationstech\ble_library\ns_ble_stack\modules\ke\api;..\middlewares\Nationstech\ble_library\ns_ble_stack\modules\rwip\api;..\middlewares\Nationstech\ble_library\ns_ble_stack\rfinit\api;..\middlewares\Nationstech\ble_library\ns_ble_stack\arch;..\middlewares\Nationstech\ble_library\ns_ble_stack\modules\common\api;..\middlewares\Nationstech\ble_library\ns_ble_stack\modules\common\src;..\middlewares\Nationstech\ble_library\ns_ble_stack\stack_common;..\middlewares\Nationstech\ble_library\ns_ble_stack\arch;..\middlewares\Nationstech\ble_library\ns_library\adv;..\middlewares\Nationstech\ble_library\ns_library\timer;..\middlewares\Nationstech\ble_library\ns_library\log;..\middlewares\Nationstech\ble_library\ns_library\sleep;..\middlewares\Nationstech\ble_library\ns_library\delay;..\middlewares\Nationstech\ble_library\ns_library\sec;..\middlewares\Nationstech\ble_library\ns_library\ble;..\user;..\user\app_profile;..\hardware\st7735;..\hardware\LCD;..\system\delay;..\SCGUI;..\SCGUI\widget;..\system;..\hardware;..\firmware\n32wb03x_std_periph_driver\inc;..\hardware\XPT2046</IncludePath>
+              <IncludePath>..\firmware\CMSIS\core;..\firmware\CMSIS\device;..\firmware\n32wb03x_std_periph_driver\inc;..\middlewares\Nationstech\ble_library\ns_ble_profile\dis\diss\api;..\middlewares\Nationstech\ble_library\ns_ble_profile\rdts;..\middlewares\Nationstech\ble_library\ns_ble_profile\rdts\rdtss\api;..\middlewares\Nationstech\ble_library\ns_ble_stack\ip\ahi\api;..\middlewares\Nationstech\ble_library\ns_ble_stack\ip\ble\hl\api;..\middlewares\Nationstech\ble_library\ns_ble_stack\ip\ble\hl\inc;..\middlewares\Nationstech\ble_library\ns_ble_stack\ip\ble\hl\src\gap;..\middlewares\Nationstech\ble_library\ns_ble_stack\ip\ble\hl\src\gatt;..\middlewares\Nationstech\ble_library\ns_ble_stack\ip\ble\hl\src\l2c;..\middlewares\Nationstech\ble_library\ns_ble_stack\ip\ble\ll\api;..\middlewares\Nationstech\ble_library\ns_ble_stack\ip\ble\ll\src;..\middlewares\Nationstech\ble_library\ns_ble_stack\ip\ble\ll\src\llc;..\middlewares\Nationstech\ble_library\ns_ble_stack\ip\ble\ll\src\lld;..\middlewares\Nationstech\ble_library\ns_ble_stack\ip\ble\ll\src\llm;..\middlewares\Nationstech\ble_library\ns_ble_stack\ip\em\api;..\middlewares\Nationstech\ble_library\ns_ble_stack\ip\hci\api;..\middlewares\Nationstech\ble_library\ns_ble_stack\ip\sch\api;..\middlewares\Nationstech\ble_library\ns_ble_stack\modules\aes\api;..\middlewares\Nationstech\ble_library\ns_ble_stack\modules\common\api;..\middlewares\Nationstech\ble_library\ns_ble_stack\modules\dbg\api;..\middlewares\Nationstech\ble_library\ns_ble_stack\modules\ecc_p256\api;..\middlewares\Nationstech\ble_library\ns_ble_stack\modules\h4tl\api;..\middlewares\Nationstech\ble_library\ns_ble_stack\modules\ke\api;..\middlewares\Nationstech\ble_library\ns_ble_stack\modules\rwip\api;..\middlewares\Nationstech\ble_library\ns_ble_stack\rfinit\api;..\middlewares\Nationstech\ble_library\ns_ble_stack\arch;..\middlewares\Nationstech\ble_library\ns_ble_stack\modules\common\api;..\middlewares\Nationstech\ble_library\ns_ble_stack\modules\common\src;..\middlewares\Nationstech\ble_library\ns_ble_stack\stack_common;..\middlewares\Nationstech\ble_library\ns_ble_stack\arch;..\middlewares\Nationstech\ble_library\ns_library\adv;..\middlewares\Nationstech\ble_library\ns_library\timer;..\middlewares\Nationstech\ble_library\ns_library\log;..\middlewares\Nationstech\ble_library\ns_library\sleep;..\middlewares\Nationstech\ble_library\ns_library\delay;..\middlewares\Nationstech\ble_library\ns_library\sec;..\middlewares\Nationstech\ble_library\ns_library\ble;..\user;..\user\app_profile;..\hardware\st7735;..\hardware\LCD;..\system\delay;..\SCGUI;..\SCGUI\widget;..\system;..\hardware;..\firmware\n32wb03x_std_periph_driver\inc;..\hardware\XPT2046;..\middlewares\Third_Party\FreeRTOS\Source\include;..\middlewares\Third_Party\FreeRTOS\Source\portable\RVDS\ARM_CM0</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -736,9 +736,39 @@
               <FilePath>..\user\app_rtc.c</FilePath>
             </File>
             <File>
+              <FileName>app_tasks.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\user\app_tasks.c</FilePath>
+            </File>
+            <File>
               <FileName>qrcodegen.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\user\qrcodegen.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>RTOS</GroupName>
+          <Files>
+            <File>
+              <FileName>tasks.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\middlewares\Third_Party\FreeRTOS\Source\tasks.c</FilePath>
+            </File>
+            <File>
+              <FileName>list.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\middlewares\Third_Party\FreeRTOS\Source\list.c</FilePath>
+            </File>
+            <File>
+              <FileName>queue.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\middlewares\Third_Party\FreeRTOS\Source\queue.c</FilePath>
+            </File>
+            <File>
+              <FileName>port.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\middlewares\Third_Party\FreeRTOS\Source\portable\RVDS\ARM_CM0\port.c</FilePath>
             </File>
           </Files>
         </Group>

@@ -121,6 +121,15 @@
 .\objects\main.o: ..\middlewares\Nationstech\ble_library\ns_ble_stack\stack_common\ble_stack_common.h
 .\objects\main.o: ..\middlewares\Nationstech\ble_library\ns_ble_stack\modules\common\api\co_bt_defines.h
 .\objects\main.o: ..\middlewares\Nationstech\ble_library\ns_library\delay\ns_delay.h
+.\objects\main.o: ..\middlewares\Third_Party\FreeRTOS\Source\include\FreeRTOS.h
+.\objects\main.o: ..\user\FreeRTOSConfig.h
+.\objects\main.o: ..\middlewares\Third_Party\FreeRTOS\Source\include\projdefs.h
+.\objects\main.o: ..\middlewares\Third_Party\FreeRTOS\Source\include\portable.h
+.\objects\main.o: ..\middlewares\Third_Party\FreeRTOS\Source\include\deprecated_definitions.h
+.\objects\main.o: ..\middlewares\Third_Party\FreeRTOS\Source\portable\RVDS\ARM_CM0\portmacro.h
+.\objects\main.o: ..\middlewares\Third_Party\FreeRTOS\Source\include\mpu_wrappers.h
+.\objects\main.o: ..\middlewares\Third_Party\FreeRTOS\Source\include\task.h
+.\objects\main.o: ..\middlewares\Third_Party\FreeRTOS\Source\include\list.h
 .\objects\main.o: ..\user\main.h
 .\objects\main.o: ..\user\app_ble.h
 .\objects\main.o: ..\middlewares\Nationstech\ble_library\ns_library\ble\ns_ble_task.h
@@ -128,6 +137,7 @@
 .\objects\main.o: ..\middlewares\Nationstech\ble_library\ns_ble_stack\modules\common\api\co_bt_defines.h
 .\objects\main.o: ..\user\app_rtc.h
 .\objects\main.o: ..\user\app_totp.h
+.\objects\main.o: ..\user\app_tasks.h
 .\objects\main.o: ..\SCGUI\app/app_gui.h
 .\objects\main.o: ..\SCGUI\sc_gui.h
 .\objects\main.o: ..\SCGUI\sc_lcd.h

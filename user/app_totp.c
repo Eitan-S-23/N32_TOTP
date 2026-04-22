@@ -4,6 +4,10 @@
  *   Dependency-free: no OpenSSL, no mbedTLS.
  */
 #include "app_totp.h"
+#include "app_rtc.h"
+#include "app_profile/app_totp_ble.h"
+#include "FreeRTOS.h"
+#include "task.h"
 #include <string.h>
 
 /* ----------------------- SHA-1 ----------------------- */
@@ -211,4 +215,74 @@ uint32_t totp_compute(const uint8_t *key, uint32_t keylen, uint64_t unix_time)
         mod *= 10u;
     }
     return bin % mod;
+}
+
+/* ----------------------- cached-triple refresh ----------------------- *
+ * app_tasks.c's totp_task calls app_totp_refresh() once per RTC 1 Hz
+ * tick. The cache holds the prev/curr/next codes for the current
+ * 30-second window so rendering code (app_gui.c) can read a consistent
+ * snapshot with a single short critical section. 29 out of 30 ticks
+ * short-circuit immediately because the counter hasn't advanced. */
+
+static struct {
+    uint32_t counter_lo;
+    uint32_t prev;
+    uint32_t curr;
+    uint32_t next;
+    uint8_t  valid;
+} s_totp_cache;
+
+void app_totp_refresh(void)
+{
+    const uint8_t *key    = app_totp_ble_get_key();
+    uint32_t       keylen = app_totp_ble_get_keylen();
+
+    if (keylen == 0u || !app_rtc_is_time_set())
+    {
+        taskENTER_CRITICAL();
+        s_totp_cache.valid = 0u;
+        taskEXIT_CRITICAL();
+        return;
+    }
+
+    uint64_t now        = app_rtc_get_unix();
+    uint32_t counter_lo = (uint32_t)totp_counter_of(now);
+
+    if (s_totp_cache.valid && counter_lo == s_totp_cache.counter_lo)
+    {
+        return; /* same 30 s window — nothing to recompute */
+    }
+
+    uint32_t prev = totp_compute(key, keylen, now - TOTP_STEP);
+    uint32_t curr = totp_compute(key, keylen, now);
+    uint32_t next = totp_compute(key, keylen, now + TOTP_STEP);
+
+    taskENTER_CRITICAL();
+    s_totp_cache.counter_lo = counter_lo;
+    s_totp_cache.prev       = prev;
+    s_totp_cache.curr       = curr;
+    s_totp_cache.next       = next;
+    s_totp_cache.valid      = 1u;
+    taskEXIT_CRITICAL();
+}
+
+int app_totp_snapshot(uint32_t *counter_lo,
+                      uint32_t *prev,
+                      uint32_t *curr,
+                      uint32_t *next)
+{
+    int valid;
+
+    taskENTER_CRITICAL();
+    valid = s_totp_cache.valid ? 1 : 0;
+    if (valid)
+    {
+        if (counter_lo) *counter_lo = s_totp_cache.counter_lo;
+        if (prev)       *prev       = s_totp_cache.prev;
+        if (curr)       *curr       = s_totp_cache.curr;
+        if (next)       *next       = s_totp_cache.next;
+    }
+    taskEXIT_CRITICAL();
+
+    return valid;
 }

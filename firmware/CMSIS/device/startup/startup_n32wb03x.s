@@ -31,16 +31,26 @@
 ;   <o> Stack Size (in Bytes) <0x0-0xFFFFFFFF:8>
 ; </h>
 
+; Main (MSP) stack — used during startup, in main() up to
+; vTaskStartScheduler(), and for all ISR frames afterwards. The BLE
+; stack's init (ns_ble_task_init etc.) recurses deeply, so we keep the
+; original 2 KB here. Each FreeRTOS task has its own PSP stack, see
+; user/app_tasks.c.
 Stack_Size      EQU     0x00000800
 
                 AREA    STACK, NOINIT, READWRITE, ALIGN=3
 Stack_Mem       SPACE   Stack_Size
 __initial_sp
-                                                  
+
 ; <h> Heap Configuration
 ;   <o>  Heap Size (in Bytes) <0x0-0xFFFFFFFF:8>
 ; </h>
 
+; libc heap. FreeRTOS itself doesn't need this (static allocation only,
+; see user/FreeRTOSConfig.h). However the pre-built Nationstech BLE
+; library pulls in malloc internally — zeroing this caused malloc() to
+; return NULL during ns_ble_task_init and HardFaulted on first use, so
+; we keep the original 512-byte heap.
 Heap_Size       EQU     0x00000200
 
                 AREA    HEAP, NOINIT, READWRITE, ALIGN=3

@@ -29,3 +29,14 @@
 .\objects\n32wb03x_it.o: ..\firmware\n32wb03x_std_periph_driver\inc\n32wb03x_qflash.h
 .\objects\n32wb03x_it.o: ..\firmware\n32wb03x_std_periph_driver\inc\misc.h
 .\objects\n32wb03x_it.o: ..\user\app_rtc.h
+.\objects\n32wb03x_it.o: ..\middlewares\Third_Party\FreeRTOS\Source\include\FreeRTOS.h
+.\objects\n32wb03x_it.o: D:\install\keil5 mdk\ARM\ARMCC\Bin\..\include\stddef.h
+.\objects\n32wb03x_it.o: ..\user\FreeRTOSConfig.h
+.\objects\n32wb03x_it.o: ..\middlewares\Third_Party\FreeRTOS\Source\include\projdefs.h
+.\objects\n32wb03x_it.o: ..\middlewares\Third_Party\FreeRTOS\Source\include\portable.h
+.\objects\n32wb03x_it.o: ..\middlewares\Third_Party\FreeRTOS\Source\include\deprecated_definitions.h
+.\objects\n32wb03x_it.o: ..\middlewares\Third_Party\FreeRTOS\Source\portable\RVDS\ARM_CM0\portmacro.h
+.\objects\n32wb03x_it.o: ..\middlewares\Third_Party\FreeRTOS\Source\include\mpu_wrappers.h
+.\objects\n32wb03x_it.o: ..\middlewares\Third_Party\FreeRTOS\Source\include\task.h
+.\objects\n32wb03x_it.o: ..\middlewares\Third_Party\FreeRTOS\Source\include\list.h
+.\objects\n32wb03x_it.o: ..\user\app_tasks.h
