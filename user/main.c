@@ -76,7 +76,7 @@ static void NVIC_Configuration(void)
 
 int main(void)
 {
-    /* Hold the SWD lines long enough for a debugger to interrupt us. */
+        /* Hold the SWD lines long enough for a debugger to interrupt us. */
     delay_n_10us(200 * 1000);
 
 		ns_log_usart_init();
@@ -88,19 +88,15 @@ int main(void)
 
     /* BLE first — nothing else may touch LSI/RCC until the stack has finished
      * its own low-speed-clock configuration. */
-    printf("[boot] app_ble_init\r\n");
     app_ble_init();
-    printf("[boot] rf_tx_power_set\r\n");
     rf_tx_power_set(TX_POWER_MAX_VAL);
 
-    printf("[boot] RCC/NVIC/TIM\r\n");
     RCC_Configuration();
     NVIC_Configuration();
     TIM_Configuration();
 
     /* RTC: enable the domain clock, program prescalers + 1 Hz wake-up.
      * BLE has already brought LSI up by this point. */
-    printf("[boot] app_rtc_init\r\n");
     app_rtc_init();
 
     /* Front-panel keys (KEY1/KEY2/KEY3 on EXTI4_12). Must come AFTER BLE
@@ -108,22 +104,18 @@ int main(void)
      * from the vector table and dispatches to it via user_EXTI4_12_IRQHandler.
      * Configuring the EXTI lines before BLE runs its vector capture works
      * too, but this order keeps all IRQ wiring sequential in one place. */
-    printf("[boot] keys\r\n");
     app_key_configuration();
 
-    printf("[boot] LCD\r\n");
     LCD_Init();
     LCD_Display_Dir(USE_LCM_DIR);
     LCD_Clear(BLACK);
 
-    printf("[boot] SCGUI\r\n");
     SC_GUI_Init((void *)LCD_Fast_DrawPoint, C_WHITE, C_BLUE, C_BLACK,
                 (lv_font_t *)&lv_font_12);
     SC_Clear(0, 0, LCD_SCREEN_WIDTH - 1, LCD_SCREEN_HEIGHT - 1);
     sc_create_screen(NULL, (Obj_t *)&main_screen, 0, 0,
                      LCD_SCREEN_WIDTH, LCD_SCREEN_HEIGHT, ALIGN_NONE);
 
-    printf("[boot] app_gui_init\r\n");
     app_gui_init(&main_screen);
     sc_create_task(0, app_gui_task, 250);
 
@@ -138,12 +130,12 @@ int main(void)
 
     printf("[boot] xTaskCreateStatic gui_task\r\n");
     g_gui_task_handle = xTaskCreateStatic(
-        gui_task, "gui",  GUI_TASK_STACK_WORDS,  NULL, 2,
+        gui_task, "gui",  GUI_TASK_STACK_WORDS,  NULL, 3,
         g_gui_stack,  &g_gui_tcb);
 
     printf("[boot] xTaskCreateStatic totp_task\r\n");
     g_totp_task_handle = xTaskCreateStatic(
-        totp_task, "totp", TOTP_TASK_STACK_WORDS, NULL, 1,
+        totp_task, "totp", TOTP_TASK_STACK_WORDS, NULL, 3,
         g_totp_stack, &g_totp_tcb);
 
     if (g_ble_task_handle == NULL ||

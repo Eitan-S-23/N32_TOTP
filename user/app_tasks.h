@@ -9,9 +9,9 @@ extern "C" {
 #endif
 
 /* ----- Stack size policy (in StackType_t words — 4 bytes each) ----- */
-#define BLE_TASK_STACK_WORDS   2048
+#define BLE_TASK_STACK_WORDS   1024
 #define GUI_TASK_STACK_WORDS   1596
-#define TOTP_TASK_STACK_WORDS  96
+#define TOTP_TASK_STACK_WORDS  512
 
 /* Task bodies. Declared here so main.c can create the tasks explicitly
  * with xTaskCreateStatic(). */
